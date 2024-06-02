@@ -8,6 +8,13 @@ from django.contrib import messages
 import os
 from django.contrib.auth import authenticate, login, logout
 from django.contrib.auth.mixins import LoginRequiredMixin
+from home_app.models import UserPost
+
+
+
+
+
+
 class RegisterView(View):
     form_class = UserRegisterForm
     template_name = 'account_app/register.html'
@@ -66,7 +73,18 @@ class UserLogoutView(LoginRequiredMixin, View):
     def get(self, request):
         logout(request)
         messages.success(request, 'user logout sccessfully', extra_tags='success')
+        
         return redirect('home_app:home')
+    
+    
+class UserProfileView(LoginRequiredMixin, View):
+    template_name = 'account_app/profile.html'
+    
+    def get(self, request, user_id):
+        user = User.objects.get(id=user_id)
+        posts = UserPost.objects.filter(user=user)
+        return render(request, self.template_name, {'user': user, 'posts': posts})
+    
         
         
         

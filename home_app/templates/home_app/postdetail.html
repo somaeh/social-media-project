@@ -1,0 +1,9 @@
+{% extends 'base.html' %}
+
+{% block content %}
+
+    <p>{{ post.user.username }} - {{ post.update|date:"Y-M" }} </p>
+
+    <p>{{ post.body }} </p>
+    
+{% endblock %}
