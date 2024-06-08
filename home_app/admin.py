@@ -1,6 +1,6 @@
 from django.contrib import admin
 
-from.models import UserPost
+from.models import UserPost, Comment
 
 
 # class PostAdmin(admin.ModelAdmin):
@@ -24,3 +24,7 @@ class UserPostAdmin(admin.ModelAdmin):
    
    
 admin.site.register(UserPost, UserPostAdmin)
+class CommentAdmin(admin.ModelAdmin):
+   list_display = ('user', 'post', 'created', 'is_reply')
+   
+admin.site.register(Comment, CommentAdmin)

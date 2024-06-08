@@ -5,7 +5,7 @@
     <h1> welcome {{ user.username }} </h1>
     <div class="card">
         {% for post in posts %}
-        <a href="{% url 'home_app:post_detail' post.id post.slug %}" class="card-body">
+        <a href="{{ post.get_absolute_url }}" class="card-body">
             {{ post.body|truncatewords:5 }}
 
         </a>

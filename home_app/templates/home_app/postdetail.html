@@ -2,8 +2,32 @@
 
 {% block content %}
 
-    <p>{{ post.user.username }} - {{ post.update|date:"Y-M" }} </p>
+   <div class="card bg-light text-block">
+    {% if request.user.id == post.user.id  %}
 
-    <p>{{ post.body }} </p>
+    <a href="{% url 'home_app:delete' post.id %}"  class="btn btn-danger">Delete</a>
+    <a href="{% url 'home_app:update'  post.id %}" class="btn btn-info">Update<a>
+    {% endif %}
+
+    <p><a href="{% url 'account_app:profile' post.user.id %}">{{ post.user.username }}</a> - {{ post.update|date:"Y-M" }} </p>
+
+    <p>{{ post.body }} </p><hr/>
+
+    </div>
+
+    {% for comment in comments %}
+
+        <div class="card bg-dark text-white">
+            <p class='card-header'>{{ comment.user }} | {{ comment.created }} </p>
+            <p class='card-body'>{{ comment.created|timesince }}</p>
+            <p class='card-body'>{{ comment.body }}</p>
+            
+       
+
+        </div>
+    {% empty %}
+        <p> no comments yet ! </p>
+    {% endfor %}
+    <p>{{ comments.count }}comments</p>
     
 {% endblock %}
