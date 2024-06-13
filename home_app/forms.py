@@ -1,6 +1,6 @@
 from django import forms
 
-from.models import UserPost
+from.models import UserPost, Comment
 
 
 
@@ -11,3 +11,22 @@ class PostCreateUpdateForm(forms.ModelForm):
         
         model = UserPost
         fields = ('body',)
+        
+        
+        
+class CommentCretaeForm(forms.ModelForm):
+    class Meta:
+        model = Comment
+        fields = ('body',)
+        widgets ={
+            'body': forms.Textarea(attrs={'class':'form-control', 'style': 'max-width: 400px;'})
+        }
+        
+# class CommentReplyForm(forms.ModelForm):
+#     class Meta:
+#         model : Comment
+#         fields = ('body',)
+#         widgets ={
+#             'body': forms.Textarea(attrs={'class':'form-control', 'style': 'max-width: 400px;'})
+#         }
+        

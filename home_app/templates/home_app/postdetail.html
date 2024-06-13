@@ -15,16 +15,35 @@
 
     </div>
 
+
+    {% if request.user.is_authenticated %}
+        <form action="" method="post" >
+            {% csrf_token %}
+            {{ form.as_p }}
+            <input type="submit" value="send">
+        </form><br/>
+    {% else %}
+        <p class="alert alert-danger">only logged in users can comment</p></hr>
+    {% endif %}
+
+
     {% for comment in comments %}
 
         <div class="card bg-dark text-white">
             <p class='card-header'>{{ comment.user }} | {{ comment.created }} </p>
             <p class='card-body'>{{ comment.created|timesince }}</p>
-            <p class='card-body'>{{ comment.body }}</p>
+            <p class='card-body'>{{ comment.body }}</p><br/>
+            <div><br/><hr/>
+            {% with replies=comment.rcomments.all %}
+                {% for reply in replies %}
+                    <p class="bg-primary p-3 m-2"> {{ reply.user }} <br/> {{ reply.body }} </p>
+                {% endfor %}
+            {% endwith %}
+            </div><br/>
             
        
 
-        </div>
+        </div><br/></hr>
     {% empty %}
         <p> no comments yet ! </p>
     {% endfor %}
