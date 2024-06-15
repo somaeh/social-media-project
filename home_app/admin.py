@@ -1,6 +1,7 @@
 from django.contrib import admin
 
 from.models import UserPost, Comment
+from.models import Vote
 
 
 # class PostAdmin(admin.ModelAdmin):
@@ -28,3 +29,5 @@ class CommentAdmin(admin.ModelAdmin):
    list_display = ('user', 'post', 'created', 'is_reply')
    
 admin.site.register(Comment, CommentAdmin)
+
+admin.site.register(Vote)

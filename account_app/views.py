@@ -10,6 +10,7 @@ from django.contrib.auth import authenticate, login, logout
 from django.contrib.auth.mixins import LoginRequiredMixin
 from home_app.models import UserPost
 from.models import Relation
+from.forms import EditUserForm
 
 
 
@@ -115,8 +116,8 @@ class UserFollowView(LoginRequiredMixin, View):
     
     
 class UserUnfollowView(LoginRequiredMixin, View):
-    def get(self, request, *args, **kwargs):
-        user = User.objects.get(pk=kwargs['post_id'])
+    def get(self, request, user_id):
+        user = User.objects.get(pk=user_id)
         relation = Relation.objects.filter(from_user=request.user, to_user=user)
         if relation.exists():
             relation.delete()
@@ -125,6 +126,24 @@ class UserUnfollowView(LoginRequiredMixin, View):
             messages.error(request, 'you are not following this user', extra_tags='danger')
             return redirect('account_app:profile', user.id)
     
+
+class EditUserView(LoginRequiredMixin, View):
+    form_class = EditUserForm 
+      
+    
+    def get(self, request):
+        form = self.form_class(instance=request.user.profile, initial={'email':request.user.email})
+        return render(request, 'account_app/edit_profile.html', {'form':form})
+     
+    
+    def post(self, request):
+        form  = self.form_class(request.POST, instance=request.user.profile)
+        if form.is_valid():
+            form.save()
+            request.user.email = form.cleaned_data['email']
+            request.user.save()
+            messages.success(request, 'profile user successfully', extra_tags='success')
+        return redirect('account_app:profile', request.user.id)
         
         
         
